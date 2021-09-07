@@ -117,9 +117,10 @@ function swap(i, j) {
     // j = temp;
 
     [listVille[i], listVille[j]] = [listVille[j], listVille[i]];
-  //  nbPermutation ++;
+ nbPermutation ++;
 
-    console.log('implement me !');
+
+
 }
 //
 function sort(type) {
@@ -128,10 +129,10 @@ function sort(type) {
             insertsort(listVille);
             break;
         case 'select':
-            selectionsort();
+            selectionsort(listVille);
             break;
         case 'bubble':
-            bubblesort();
+            bubblesort(listVille);
             break;
         case 'shell':
             shellsort();
@@ -148,45 +149,105 @@ function sort(type) {
     }
 }
 
-function insertsort(listVille) {
-    // for (let i = 1; i < listVille.length; i++) {
-    //     let current = listVille[i];
-    //     let j;
-    //
-    //     for (j= i -1; j >= 0 && listVille[j] > current; j--) {
-    //         listVille[j+1] = listVille[j]
-    //     }
-    //     listVille[j + 1] = current
-    // }
-    // return listVille;
+function insertsort(list_villes) {
 
+        let all_list = list_villes.length;
+        for (let i = 1; i < all_list; i++) {
+            let current = list_villes[i].distanceFromGrenoble;
+            let j = i - 1;
 
+            while (j >= 0 && list_villes[j].distanceFromGrenoble > current) {
 
-    for (let i =1; i < listVille.length; i ++) {
-        let j = i -1
-        let temp = listVille[i]
-
-        while(j >= 0 && listVille[j] > temp) {
-            listVille[j +1] = listVille[j]
-            j--
+                list_villes[j + 1].distanceFromGrenoble = list_villes[j].distanceFromGrenoble;
+                j = j - 1;
+            }
+            list_villes[j + 1].distanceFromGrenoble = current;
         }
-        listVille[j+1] = temp
+
+return list_villes;
+
+
+    // for (let i =1; i < listVille.length; i ++) {
+    //     let j = i -1
+    //     let temp = listVille[i]
+    //
+    //     while(j >= 0 && listVille[j] > temp) {
+    //         listVille[j +1] = listVille[j]
+    //         j--
+    //     }
+    //     listVille[j+1] = temp
+    // }
+    // return listVille
+
+}
+console.log("insertsort - done !");
+
+
+
+
+function selectionsort(list_villes2) {
+
+    let all_list2 = list_villes2.length;
+
+    for (let i = 0; i < all_list2; i++) {
+        let smallest = i;
+        for (let j = i + 1; j < all_list2; j++) {
+            if (list_villes2[j].distanceFromGrenoble < list_villes2[smallest].distanceFromGrenoble) {
+                smallest = j;
+            }
+        }
+        if (smallest !== i) {
+            let current = list_villes2[i].distanceFromGrenoble;
+            list_villes2[i].distanceFromGrenoble = list_villes2[smallest].distanceFromGrenoble;
+            list_villes2[smallest].distanceFromGrenoble = current;
+        }
     }
-    return listVille
+    return list_villes2;
+}
+console.log("selectionsort - done!");
+
+
+
+function bubblesort(list_villes3) {
+    // for (let i = 0; i < list_villes3.length; i++) {
+    //     for (let j = 0; j < list_villes3.length; j++) {
+    //         if (list_villes3[j] > list_villes3[j + 1]) {
+    //             let current = list_villes3[j].distanceFromGrenoble;
+    //             list_villes3[j].distanceFromGrenoble = list_villes3[j + 1].distanceFromGrenoble;
+    //             list_villes3[j + 1].distanceFromGrenoble = current;
+    //         }
+    //     }
+    // }
+    // return list_villes3;
+//----------------------------------
+    // let swapped = true;
+    // do {
+    //     swapped = false;
+    //     for (let i = 0; i < list_villes3.length; i++) {
+    //         let temp = list_villes3[i].distanceFromGrenoble;
+    //
+    //         if (list_villes3[i].distanceFromGrenoble > list_villes3[i + 1].distanceFromGrenoble) {
+
+
+    let swapped = true;
+
+    while (swapped) {
+        swapped = false;
+        for (let i = 0; i < list_villes3.length - 1; i++) {
+            let temp = list_villes3[i].distanceFromGrenoble;
+            if (list_villes3[i].distanceFromGrenoble > list_villes3[i + 1].distanceFromGrenoble) {
+                list_villes3[i].distanceFromGrenoble = list_villes3[i + 1].distanceFromGrenoble;
+                list_villes3[i + 1].distanceFromGrenoble = temp;
+                swapped = true;
+            }
+        }
+    }
+    return list_villes3;
+
 
 }
-console.log("insertsort - implement me !");
+console.log("bubblesort - done !");
 
-
-
-
-function selectionsort() {
-    console.log("selectionsort - implement me !");
-}
-
-function bubblesort() {
-    console.log("bubblesort - implement me !");
-}
 
 function shellsort() {
     console.log("shellsort - implement me !");
