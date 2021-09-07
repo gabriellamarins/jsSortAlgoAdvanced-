@@ -61,8 +61,34 @@ function getArrayCsv(csv) {
  * @returns la distance qui sépare la ville de Grenoble
  */
 function distanceFromGrenoble(ville) {
+
+    let lat1 = ville.latitude;
+    let lon1 = ville.longitude;
+
+    let lat2 = 45.166667;
+    let lon2 = 5.716667;
+    //
+    // let y = lat2 - lat1;
+    // let x = lon2 - lon1;
+    //
+    // return (x * x + y * y)
+
+
+    const R = 6371e3; // metres
+    const la = lat1 * Math.PI/180; // φ, λ in radians
+    const la2 = lat2 * Math.PI/180;
+    const cont_lat = (lat2-lat1) * Math.PI/180;
+    const cont_long = (lon2-lon1) * Math.PI/180;
+
+    const a = Math.sin(cont_lat/2) * Math.sin(cont_lat/2) +
+        Math.cos(la) * Math.cos(la2) *
+        Math.sin(cont_long/2) * Math.sin(cont_long/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    const d = R * c; // in metres
+
     console.log('implement me !');
-    return 0;
+    return d;
 }
 
 /**
@@ -73,23 +99,33 @@ function distanceFromGrenoble(ville) {
  * @return vrai si la ville i est plus proche
  */
 function isLess(i, j) {
-    console.log('implement me !');
+if (i.distanceFromGrenoble < j.distanceFromGrenoble) {
     return true;
-}
+     }
 
+}
+console.log('implement me !');
 /**
  * interverti la ville i avec la ville j dans la liste des villes
  * @param {*} i 
  * @param {*} j 
  */
 function swap(i, j) {
+    // const temp = i;
+    //
+    // i = j;
+    // j = temp;
+
+    [listVille[i], listVille[j]] = [listVille[j], listVille[i]];
+  //  nbPermutation ++;
+
     console.log('implement me !');
 }
-
+//
 function sort(type) {
     switch (type) {
         case 'insert':
-            insertsort();
+            insertsort(listVille);
             break;
         case 'select':
             selectionsort();
@@ -112,9 +148,37 @@ function sort(type) {
     }
 }
 
-function insertsort() {
-    console.log("insertsort - implement me !");
+function insertsort(listVille) {
+    // for (let i = 1; i < listVille.length; i++) {
+    //     let current = listVille[i];
+    //     let j;
+    //
+    //     for (j= i -1; j >= 0 && listVille[j] > current; j--) {
+    //         listVille[j+1] = listVille[j]
+    //     }
+    //     listVille[j + 1] = current
+    // }
+    // return listVille;
+
+
+
+    for (let i =1; i < listVille.length; i ++) {
+        let j = i -1
+        let temp = listVille[i]
+
+        while(j >= 0 && listVille[j] > temp) {
+            listVille[j +1] = listVille[j]
+            j--
+        }
+        listVille[j+1] = temp
+    }
+    return listVille
+
 }
+console.log("insertsort - implement me !");
+
+
+
 
 function selectionsort() {
     console.log("selectionsort - implement me !");
@@ -170,3 +234,5 @@ function displayListVille() {
         mainList.appendChild(elem);
     }
 }
+
+
