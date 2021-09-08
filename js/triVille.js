@@ -109,7 +109,7 @@ console.log('implement me !');
  * interverti la ville i avec la ville j dans la liste des villes
  * @param {*} i
  * @param {*} j
- * * * @param {*} list
+ * @param {*} list
  */
 function swap(list, i, j) {
     nbPermutation++;
