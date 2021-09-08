@@ -109,19 +109,15 @@ console.log('implement me !');
  * interverti la ville i avec la ville j dans la liste des villes
  * @param {*} i
  * @param {*} j
- * * * @param {*} listeV
+ * * * @param {*} list
  */
-function swap(listeV, i, j) {
+function swap(list, i, j) {
     nbPermutation++;
-    let intermediaire = listeV[i];
-    listeV[i] = listeV[j];
-    listeV[j] = intermediaire;
+    let x = list[i];
+    list[i] = list[j];
+    list[j] = x;
 }
 
-
- //   console.log('implement me !');
-
-//
 function sort(type) {
     switch (type) {
         case 'insert':
@@ -138,7 +134,7 @@ function sort(type) {
             shellsort(listVille);
             break;
         case 'merge':
-            mergeSort(listVille);
+          listVille = mergeSort(listVille);
             break;
         case 'heap':
             heapsort();
@@ -253,46 +249,59 @@ console.log("shellsort - done!");
 
 
 
-function merge(left, right) {
-    let array1 = []
-    while (left.length && right.length) {
-        if (left[0] < right[0]) {
-            array1.push(left.shift())
-        } else {
-            array1.push(right.shift())
-        }
-    }
-    return [ ...array1, ...left, ...right ]
-}
 
 
 function mergeSort(list_villes5) {
-    // list_villes5 = [...list_villes5.slice(0, 4)]
-    const half = list_villes5.length / 2
+        // list_villes5 = [...list_villes5.slice(0, 4)]
+        let all_list5 = list_villes5.length;
+        let half = Math.floor(all_list5 / 2);
+        const left = list_villes5.slice(0, half)
+        const right = list_villes5.slice(half, all_list5)
 
-    if(list_villes5.length < 1){ //não entendo isso aqui (rever o pseudo)
-        return list_villes5;
+
+
+        if (all_list5 <= 1) { //não entendo isso aqui (rever o pseudo) 1 ou 2?
+            return list_villes5;
+        } else {
+            let merged_left = mergeSort(left);
+            let merged_right = mergeSort(right);
+
+            return merge(merged_left, merged_right);
+        }
+        // const left = list_villes5.splice(0, half)
+        // const right = list_villes5.splice(half+1, list_villes5.length)
+        //
+        // let res = merge(merged_left, merged_right);
+        // return res;
     }
 
-    // const left = list_villes5.splice(0, half)
-    // const right = list_villes5.splice(half+1, list_villes5.length)
-    // let merged_left = mergeSort(left);
-    // let merged_right = mergeSort(right);
-    // let res = merge(merged_left, merged_right);
-    // return res;
 
-    const left = list_villes5.splice(0, half)
-    const right = list_villes5.splice(half+1, list_villes5.length)
-    let merged_left = mergeSort(left);
-    let merged_right = mergeSort(right);
-    let res = merge(merged_left, merged_right);
-    return res;
+    function merge(left, right) {
+        let array1 = []
 
+        if (left.length === 0) {
+            return right;
+        }
 
-}
+        if (right.length === 0) {
+            return left;
+        }
 
-console.log("mergesort - implement me !");
-// mergeSort(listVille)
+        nbPermutation++;
+        //   while (left.length && right.length) {
+        if (isLess(left[0], right[0])) {
+            array1.push(left.shift())
+            return array1.concat(merge(left, right))
+        } else {
+            array1.push(right.shift())
+            return array1.concat(merge(left, right))
+        }
+        //  }
+        //  return [ ...array1, ...left, ...right ]
+    }
+
+console.log("mergesort - done!");
+
 
 
 
