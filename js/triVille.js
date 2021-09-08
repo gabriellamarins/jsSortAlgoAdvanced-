@@ -99,33 +99,33 @@ function distanceFromGrenoble(ville) {
  * @return vrai si la ville i est plus proche
  */
 function isLess(i, j) {
-if (i.distanceFromGrenoble < j.distanceFromGrenoble) {
+if (i.distanceFromGrenoble < j.distanceFromGrenoble)
     return true;
-     }
+
 
 }
 console.log('implement me !');
 /**
  * interverti la ville i avec la ville j dans la liste des villes
- * @param {*} i 
- * @param {*} j 
+ * @param {*} i
+ * @param {*} j
+ * * * @param {*} listeV
  */
-function swap(i, j) {
-    // const temp = i;
-    //
-    // i = j;
-    // j = temp;
-
-    [listVille[i], listVille[j]] = [listVille[j], listVille[i]];
- nbPermutation ++;
-
-
-    console.log('implement me !');
+function swap(listeV, i, j) {
+    nbPermutation++;
+    let intermediaire = listeV[i];
+    listeV[i] = listeV[j];
+    listeV[j] = intermediaire;
 }
+
+
+ //   console.log('implement me !');
+
 //
 function sort(type) {
     switch (type) {
         case 'insert':
+          // listVille = insertsort(listVille);
             insertsort(listVille);
             break;
         case 'select':
@@ -135,10 +135,10 @@ function sort(type) {
             bubblesort(listVille);
             break;
         case 'shell':
-            shellsort();
+            shellsort(listVille);
             break;
         case 'merge':
-            mergesort();
+            mergeSort(listVille);
             break;
         case 'heap':
             heapsort();
@@ -150,39 +150,38 @@ function sort(type) {
 }
 
 function insertsort(list_villes) {
+    nbPermutation=0;
+    // list_villes = [...list_villes];
 
         let all_list = list_villes.length;
-        for (let i = 1; i < all_list; i++) {
-            let current = list_villes[i].distanceFromGrenoble;
-            let j = i - 1;
+        for (let i = 0; i < all_list; i++) {
+            let current = list_villes[i];
+            let j = i;
 
-            while (j >= 0 && list_villes[j].distanceFromGrenoble > current) {
-
-                list_villes[j + 1].distanceFromGrenoble = list_villes[j].distanceFromGrenoble;
-                j = j - 1;
+            while (j > 0 && isLess(current, list_villes[j-1])) {
+                 swap(list_villes,j,j-1);
+               j--;
             }
-            list_villes[j + 1].distanceFromGrenoble = current;
+            list_villes[j] = current;
         }
+   return list_villes;
 
-return list_villes;
-
-
-    // for (let i =1; i < listVille.length; i ++) {
-    //     let j = i -1
-    //     let temp = listVille[i]
+    // let all_list = list_villes.length;
+    // for (let i = 1; i < all_list; i++) {
+    //     let current = list_villes[i].distanceFromGrenoble;
+    //     let j = i - 1;
     //
-    //     while(j >= 0 && listVille[j] > temp) {
-    //         listVille[j +1] = listVille[j]
-    //         j--
+    //     while (j >= 0 && list_villes[j].distanceFromGrenoble > current) {
+    //
+    //         list_villes[j + 1].distanceFromGrenoble = list_villes[j].distanceFromGrenoble;
+    //         j = j - 1;
     //     }
-    //     listVille[j+1] = temp
+    //     list_villes[j + 1].distanceFromGrenoble = current;
     // }
-    // return listVille
-
-}
+    //
+    // return list_villes;
+ }
 console.log("insertsort - done !");
-
-
 
 
 function selectionsort(list_villes2) {
@@ -192,14 +191,14 @@ function selectionsort(list_villes2) {
     for (let i = 0; i < all_list2; i++) {
         let smallest = i;
         for (let j = i + 1; j < all_list2; j++) {
-            if (list_villes2[j].distanceFromGrenoble < list_villes2[smallest].distanceFromGrenoble) {
+              if (isLess(list_villes2[j], list_villes2[smallest])) {
                 smallest = j;
             }
         }
         if (smallest !== i) {
-            let current = list_villes2[i].distanceFromGrenoble;
-            list_villes2[i].distanceFromGrenoble = list_villes2[smallest].distanceFromGrenoble;
-            list_villes2[smallest].distanceFromGrenoble = current;
+            let current = list_villes2[i];
+            swap(list_villes2, i, smallest)
+            list_villes2[smallest] = current;
         }
     }
     return list_villes2;
@@ -209,35 +208,15 @@ console.log("selectionsort - done!");
 
 
 function bubblesort(list_villes3) {
-    // for (let i = 0; i < list_villes3.length; i++) {
-    //     for (let j = 0; j < list_villes3.length; j++) {
-    //         if (list_villes3[j] > list_villes3[j + 1]) {
-    //             let current = list_villes3[j].distanceFromGrenoble;
-    //             list_villes3[j].distanceFromGrenoble = list_villes3[j + 1].distanceFromGrenoble;
-    //             list_villes3[j + 1].distanceFromGrenoble = current;
-    //         }
-    //     }
-    // }
-    // return list_villes3;
-//----------------------------------
-    // let swapped = true;
-    // do {
-    //     swapped = false;
-    //     for (let i = 0; i < list_villes3.length; i++) {
-    //         let temp = list_villes3[i].distanceFromGrenoble;
-    //
-    //         if (list_villes3[i].distanceFromGrenoble > list_villes3[i + 1].distanceFromGrenoble) {
-
-
     let swapped = true;
 
     while (swapped) {
         swapped = false;
         for (let i = 0; i < list_villes3.length - 1; i++) {
-            let temp = list_villes3[i].distanceFromGrenoble;
-            if (list_villes3[i].distanceFromGrenoble > list_villes3[i + 1].distanceFromGrenoble) {
-                list_villes3[i].distanceFromGrenoble = list_villes3[i + 1].distanceFromGrenoble;
-                list_villes3[i + 1].distanceFromGrenoble = temp;
+            let current2 = list_villes3[i];
+            if (isLess(list_villes3[i + 1],list_villes3[i])) {
+                swap(list_villes3, i, i+1)
+                list_villes3[i + 1] = current2;
                 swapped = true;
             }
         }
@@ -249,13 +228,72 @@ function bubblesort(list_villes3) {
 console.log("bubblesort - done !");
 
 
-function shellsort() {
-    console.log("shellsort - implement me !");
+function shellsort(list_villes4) {
+
+    let all_list4 = list_villes4.length;
+
+    for (let gap = Math.floor(all_list4 /2); gap > 0; gap = Math.floor(gap /2)) //math.floor pra arredondar as dividsoes
+    {
+
+        for (let i = gap; i < all_list4; i += 1) //o =, de alguma forma, impede a pagina tenha problemas pra recarregar
+        {
+           let current3 = list_villes4[i];
+           let j;
+
+            for (j = i; j >= gap && isLess(current3, list_villes4[j-gap]); j -= gap) { //aqui o = faz o mesmo
+                swap(list_villes4, j, j-gap)
+            }
+            list_villes4[j] = current3;
+        }
+    }
+
+    return list_villes4;
+}
+console.log("shellsort - done!");
+
+
+
+function merge(left, right) {
+    let array1 = []
+    while (left.length && right.length) {
+        if (left[0] < right[0]) {
+            array1.push(left.shift())
+        } else {
+            array1.push(right.shift())
+        }
+    }
+    return [ ...array1, ...left, ...right ]
 }
 
-function mergesort() {
-    console.log("mergesort - implement me !");
+
+function mergeSort(list_villes5) {
+    // list_villes5 = [...list_villes5.slice(0, 4)]
+    const half = list_villes5.length / 2
+
+    if(list_villes5.length < 1){ //não entendo isso aqui (rever o pseudo)
+        return list_villes5;
+    }
+
+    // const left = list_villes5.splice(0, half)
+    // const right = list_villes5.splice(half+1, list_villes5.length)
+    // let merged_left = mergeSort(left);
+    // let merged_right = mergeSort(right);
+    // let res = merge(merged_left, merged_right);
+    // return res;
+
+    const left = list_villes5.splice(0, half)
+    const right = list_villes5.splice(half+1, list_villes5.length)
+    let merged_left = mergeSort(left);
+    let merged_right = mergeSort(right);
+    let res = merge(merged_left, merged_right);
+    return res;
+
+
 }
+
+console.log("mergesort - implement me !");
+// mergeSort(listVille)
+
 
 
 function heapsort() {
