@@ -149,30 +149,30 @@ function sort(type) {
 }
 
 function insertsort(listVille) {
-    // for (let i = 1; i < listVille.length; i++) {
-    //     let current = listVille[i];
-    //     let j;
-    //
-    //     for (j= i -1; j >= 0 && listVille[j] > current; j--) {
-    //         listVille[j+1] = listVille[j]
-    //     }
-    //     listVille[j + 1] = current
-    // }
-    // return listVille;
+    for (let i = 1; i < listVille.length; i++) {
+        let current = listVille[i];
+        let j;
 
-
-
-    for (let i =1; i < listVille.length; i ++) {
-        let j = i -1
-        let temp = listVille[i]
-
-        while(j >= 0 && listVille[j] > temp) {
-            listVille[j +1] = listVille[j]
-            j--
+        for (j= i -1; j >= 0 && listVille[j] > current; j--) {
+            listVille[j+1] = listVille[j]
         }
-        listVille[j+1] = temp
+        listVille[j + 1] = current
     }
-    return listVille
+    return listVille;
+
+
+
+    // for (let i =1; i < listVille.length; i ++) {
+    //     let j = i -1
+    //     let temp = listVille[i]
+    //
+    //     while(j >= 0 && listVille[j] > temp) {
+    //         listVille[j +1] = listVille[j]
+    //         j--
+    //     }
+    //     listVille[j+1] = temp
+    // }
+    // return listVille
 
 }
 console.log("insertsort - implement me !");
