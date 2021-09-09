@@ -113,9 +113,9 @@ console.log('implement me !');
  */
 function swap(list, i, j) {
     nbPermutation++;
-    let x = list[i];
+    let current_s = list[i];
     list[i] = list[j];
-    list[j] = x;
+    list[j] = current_s;
 }
 
 function sort(type) {
@@ -131,16 +131,16 @@ function sort(type) {
             bubblesort(listVille);
             break;
         case 'shell':
-            shellsort(listVille);
+           listVille = shellsort(listVille);
             break;
         case 'merge':
           listVille = mergeSort(listVille);
             break;
         case 'heap':
-            heapsort();
+            listVille = heapsort(listVille);
             break;
         case 'quick':
-            quicksort();
+           listVille = quicksort(listVille, 0, listVille.length - 1);
             break;
     }
 }
@@ -158,24 +158,9 @@ function insertsort(list_villes) {
                  swap(list_villes,j,j-1);
                j--;
             }
-            list_villes[j] = current;
-        }
+       }
    return list_villes;
 
-    // let all_list = list_villes.length;
-    // for (let i = 1; i < all_list; i++) {
-    //     let current = list_villes[i].distanceFromGrenoble;
-    //     let j = i - 1;
-    //
-    //     while (j >= 0 && list_villes[j].distanceFromGrenoble > current) {
-    //
-    //         list_villes[j + 1].distanceFromGrenoble = list_villes[j].distanceFromGrenoble;
-    //         j = j - 1;
-    //     }
-    //     list_villes[j + 1].distanceFromGrenoble = current;
-    // }
-    //
-    // return list_villes;
  }
 console.log("insertsort - done !");
 
@@ -191,11 +176,9 @@ function selectionsort(list_villes2) {
                 smallest = j;
             }
         }
-        if (smallest !== i) {
-            let current = list_villes2[i];
+
             swap(list_villes2, i, smallest)
-            list_villes2[smallest] = current;
-        }
+
     }
     return list_villes2;
 }
@@ -210,9 +193,8 @@ function bubblesort(list_villes3) {
         swapped = false;
         for (let i = 0; i < list_villes3.length - 1; i++) {
             let current2 = list_villes3[i];
-            if (isLess(list_villes3[i + 1],list_villes3[i])) {
+            if (isLess(list_villes3[i + 1],current2)) {
                 swap(list_villes3, i, i+1)
-                list_villes3[i + 1] = current2;
                 swapped = true;
             }
         }
@@ -225,42 +207,40 @@ console.log("bubblesort - done !");
 
 
 function shellsort(list_villes4) {
+    // nbPermutation = 0;
 
-    let all_list4 = list_villes4.length;
-
-    for (let gap = Math.floor(all_list4 /2); gap > 0; gap = Math.floor(gap /2)) //math.floor pra arredondar as dividsoes
-    {
-
-        for (let i = gap; i < all_list4; i += 1) //o =, de alguma forma, impede a pagina tenha problemas pra recarregar
-        {
-           let current3 = list_villes4[i];
-           let j;
-
-            for (j = i; j >= gap && isLess(current3, list_villes4[j-gap]); j -= gap) { //aqui o = faz o mesmo
-                swap(list_villes4, j, j-gap)
+    let all_list = list_villes4.length;
+    let gap = 0;
+    while (gap < all_list) {
+        gap = (3 * gap + 1);
+    }
+    while (gap !== 0) {
+        gap = Math.floor(gap / 3);
+        for (let i = gap; i < all_list; i++) {
+            let current = list_villes4[i];
+            let j = i;  // nbPermutation++;
+            while ((j > gap - 1) && isLess(current, list_villes4[j - gap]))
+            {
+                swap(list_villes4, j, j-gap)  //tableau[j] = tableau[j - n]
+                j = j - gap;
             }
-            list_villes4[j] = current3;
+            list_villes4[j]=current;
         }
     }
-
     return list_villes4;
 }
+
+
 console.log("shellsort - done!");
 
+function mergeSort(list_villes5) { //Tri par fusion
 
-
-
-
-function mergeSort(list_villes5) {
-        // list_villes5 = [...list_villes5.slice(0, 4)]
         let all_list5 = list_villes5.length;
         let half = Math.floor(all_list5 / 2);
         const left = list_villes5.slice(0, half)
         const right = list_villes5.slice(half, all_list5)
 
-
-
-        if (all_list5 <= 1) { //não entendo isso aqui (rever o pseudo) 1 ou 2?
+        if (all_list5 <= 1) {
             return list_villes5;
         } else {
             let merged_left = mergeSort(left);
@@ -268,27 +248,18 @@ function mergeSort(list_villes5) {
 
             return merge(merged_left, merged_right);
         }
-        // const left = list_villes5.splice(0, half)
-        // const right = list_villes5.splice(half+1, list_villes5.length)
-        //
-        // let res = merge(merged_left, merged_right);
-        // return res;
     }
-
-
-    function merge(left, right) {
+function merge(left, right) {
         let array1 = []
 
         if (left.length === 0) {
             return right;
         }
-
         if (right.length === 0) {
             return left;
         }
 
         nbPermutation++;
-        //   while (left.length && right.length) {
         if (isLess(left[0], right[0])) {
             array1.push(left.shift())
             return array1.concat(merge(left, right))
@@ -296,22 +267,182 @@ function mergeSort(list_villes5) {
             array1.push(right.shift())
             return array1.concat(merge(left, right))
         }
-        //  }
-        //  return [ ...array1, ...left, ...right ]
     }
 
 console.log("mergesort - done!");
 
 
-
-
-function heapsort() {
-    console.log("heapsort - implement me !");
+function heapsort (list_villes6) {
+    maxheap(list_villes6)
+    for (let i = 0; i < list_villes6.length - 1; i++) {
+        swap(list_villes6, 0, i)
+        sink(list_villes6, i, 0)
+    }
 }
 
-function quicksort() {
-    console.log("quicksort - implement me !");
+
+    function maxheap(list_villes6) {
+        for(let i = 0; i <list_villes6.length -1; i++) {
+            heapify(list_villes6, i)
+    }
+
 }
+
+
+    function heapify(list_villes6, index) {
+    if (list_villes6[index] > list_villes6[index/2]) {
+        swap(list_villes6, index, index /2)
+        heapify(list_villes6, index /2)
+    }
+   }
+
+   function sink(list_villes6, element, index) {
+     let  leftChild = (2 * index + 1);
+       let max = leftChild;
+
+     if (leftChild < element) {
+         if (list_villes6[leftChild] > list_villes6[2*index]) {
+             let max = leftChild;
+         }
+         else {
+             let max = (2*index);
+         }
+     if(list_villes6[max]> list_villes6[index]) {
+         swap(list_villes6, max, index)
+         sink(list_villes6, element, max)
+         }
+       }
+     return list_villes6;
+
+   }
+
+// function heapsort(list_villes6) {
+//
+//     const buildMaxHeap = (list_villes6) => {
+//         // Get index of the middle element
+//         // let i = Math.floor(list_villes6.length / 2 - 1);
+//      //   let i = list_villes6.length - 1
+//
+//
+//
+//         // Build a max heap out of
+//         // All array elements passed in
+//         while (i >= 0) {
+//             heapify(list_villes6, i, list_villes6.length);
+//             i -= 1;
+//         }
+//     }
+//
+//     const heapify = (heap, i, max) => {
+//
+//         let index;
+//         let leftChild;
+//         let rightChild;
+//
+//         while (i < max) {
+//             index = i;
+//
+//             // Get the left child index
+//             // Using the known formula
+//             leftChild = 2 * i + 1;
+//
+//             // Get the right child index
+//             // Using the known formula
+//             rightChild = leftChild + 1;
+//
+//             // If the left child is not last element
+//             // And its value is bigger
+//             if (leftChild < max && heap[leftChild] > heap[index]) {
+//                 index = leftChild;
+//             }
+//
+//             // If the right child is not last element
+//             // And its value is bigger
+//             if (rightChild < max && heap[rightChild] > heap[index]) {
+//                 index = rightChild;
+//             }
+//
+//             // If none of the above conditions is true
+//             // Just return
+//             if (index === i) {
+//                 return;
+//             }
+//
+//             // Else swap elements
+//             swap(heap, i, index);
+//
+//             // Continue by using the swapped index
+//             i = index;
+//         }
+//     }
+//
+//     const swap = (list_ville6, firstItemIndex, lastItemIndex) => {
+//         const temp = list_ville6[firstItemIndex];
+//
+//         // Swap first and last items in the array
+//         list_ville6[firstItemIndex] = list_ville6[lastItemIndex];
+//         list_ville6[lastItemIndex] = temp;
+//     }
+//
+//
+//
+//
+//
+//     // Build max heap
+//     buildMaxHeap(list_villes6);
+//
+//     // Get the index of the last element
+//     let lastElement = list_villes6.length - 1;
+//
+//     // Continue heap sorting until we have
+//     // One element left
+//     while (lastElement > 0) {
+//         swap(list_villes6, 0, lastElement);
+//         heapify(list_villes6, 0, lastElement);
+//         lastElement -= 1;
+//     }
+//
+//     // Return sorted array
+//     return list_villes6;
+// }
+
+
+
+
+
+console.log("heapsort - implement me !");
+
+
+
+function quicksort(list_villes7, first_qs, last) {
+
+
+    if (first_qs < last) {
+
+        let pi = partitionner(list_villes7, first_qs, last)
+        quicksort(list_villes7, first_qs, pi - 1)
+        quicksort(list_villes7, pi + 1, last)
+    }
+    return list_villes7;
+}
+
+function partitionner(list_villes7, first_qs, last) {
+        let pivot = list_villes7[last];
+        let j = first_qs;
+
+        for (let i = first_qs; i < last; i++) {
+            if (isLess(list_villes7[i], pivot)) {
+                swap(list_villes7, i, j)
+                j = j + 1;
+            }
+        }
+        swap(list_villes7, j, last)
+        return j;
+    }
+
+console.log("quicksort - done!");
+
+
 
 /** MODEL */
 
@@ -342,5 +473,15 @@ function displayListVille() {
         mainList.appendChild(elem);
     }
 }
+
+
+
+//----------------------------
+
+
+
+
+
+
 
 
