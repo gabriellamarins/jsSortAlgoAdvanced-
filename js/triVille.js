@@ -61,30 +61,19 @@ function getArrayCsv(csv) {
  * @returns la distance qui sépare la ville de Grenoble
  */
 function distanceFromGrenoble(ville) {
-
     let lat1 = ville.latitude;
     let lon1 = ville.longitude;
-
     let lat2 = 45.166667;
     let lon2 = 5.716667;
-    //
-    // let y = lat2 - lat1;
-    // let x = lon2 - lon1;
-    //
-    // return (x * x + y * y)
-
-
     const R = 6371e3; // metres
     const la = lat1 * Math.PI/180; // φ, λ in radians
     const la2 = lat2 * Math.PI/180;
     const cont_lat = (lat2-lat1) * Math.PI/180;
     const cont_long = (lon2-lon1) * Math.PI/180;
-
     const a = Math.sin(cont_lat/2) * Math.sin(cont_lat/2) +
         Math.cos(la) * Math.cos(la2) *
         Math.sin(cont_long/2) * Math.sin(cont_long/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
     const d = R * c; // in metres
 
     console.log('implement me !');
@@ -101,8 +90,6 @@ function distanceFromGrenoble(ville) {
 function isLess(i, j) {
 if (i.distanceFromGrenoble < j.distanceFromGrenoble)
     return true;
-
-
 }
 console.log('implement me !');
 /**
@@ -137,7 +124,7 @@ function sort(type) {
           listVille = mergeSort(listVille);
             break;
         case 'heap':
-            listVille = heapsort(listVille);
+            heapsort(listVille);
             break;
         case 'quick':
            listVille = quicksort(listVille, 0, listVille.length - 1);
@@ -185,7 +172,6 @@ function selectionsort(list_villes2) {
 console.log("selectionsort - done!");
 
 
-
 function bubblesort(list_villes3) {
     let swapped = true;
 
@@ -229,12 +215,10 @@ function shellsort(list_villes4) {
     }
     return list_villes4;
 }
-
-
 console.log("shellsort - done!");
 
-function mergeSort(list_villes5) { //Tri par fusion
 
+function mergeSort(list_villes5) { //Tri par fusion
         let all_list5 = list_villes5.length;
         let half = Math.floor(all_list5 / 2);
         const left = list_villes5.slice(0, half)
@@ -268,148 +252,49 @@ function merge(left, right) {
             return array1.concat(merge(left, right))
         }
     }
-
 console.log("mergesort - done!");
 
 
 function heapsort (list_villes6) {
     maxheap(list_villes6)
-    for (let i = 0; i < list_villes6.length - 1; i++) {
+    for (let i = list_villes6.length - 1; i > 0; i--) {
         swap(list_villes6, 0, i)
         sink(list_villes6, i, 0)
     }
 }
 
-
     function maxheap(list_villes6) {
         for(let i = 0; i <list_villes6.length -1; i++) {
             heapify(list_villes6, i)
     }
+   }
 
-}
-
-
-    function heapify(list_villes6, index) {
-    if (list_villes6[index] > list_villes6[index/2]) {
-        swap(list_villes6, index, index /2)
-        heapify(list_villes6, index /2)
+   function heapify(list_villes6, index) {
+    if (isLess(list_villes6[Math.floor(index /2)], list_villes6[index])) {
+        swap(list_villes6, index, Math.floor(index /2))
+        heapify(list_villes6, Math.floor(index /2))
     }
    }
 
    function sink(list_villes6, element, index) {
-     let  leftChild = (2 * index + 1);
-       let max = leftChild;
+     let  leftChild = 2 * index + 1;
+       let max;
 
      if (leftChild < element) {
-         if (list_villes6[leftChild] > list_villes6[2*index]) {
-             let max = leftChild;
+         if (isLess(list_villes6[2 * index], list_villes6[leftChild])) {
+             max = leftChild;
          }
          else {
-             let max = (2*index);
+             max = 2*index;
          }
-     if(list_villes6[max]> list_villes6[index]) {
+     if(isLess(list_villes6[index], list_villes6[max])) {
          swap(list_villes6, max, index)
          sink(list_villes6, element, max)
          }
        }
-     return list_villes6;
+//     return list_villes6;
 
    }
-
-// function heapsort(list_villes6) {
-//
-//     const buildMaxHeap = (list_villes6) => {
-//         // Get index of the middle element
-//         // let i = Math.floor(list_villes6.length / 2 - 1);
-//      //   let i = list_villes6.length - 1
-//
-//
-//
-//         // Build a max heap out of
-//         // All array elements passed in
-//         while (i >= 0) {
-//             heapify(list_villes6, i, list_villes6.length);
-//             i -= 1;
-//         }
-//     }
-//
-//     const heapify = (heap, i, max) => {
-//
-//         let index;
-//         let leftChild;
-//         let rightChild;
-//
-//         while (i < max) {
-//             index = i;
-//
-//             // Get the left child index
-//             // Using the known formula
-//             leftChild = 2 * i + 1;
-//
-//             // Get the right child index
-//             // Using the known formula
-//             rightChild = leftChild + 1;
-//
-//             // If the left child is not last element
-//             // And its value is bigger
-//             if (leftChild < max && heap[leftChild] > heap[index]) {
-//                 index = leftChild;
-//             }
-//
-//             // If the right child is not last element
-//             // And its value is bigger
-//             if (rightChild < max && heap[rightChild] > heap[index]) {
-//                 index = rightChild;
-//             }
-//
-//             // If none of the above conditions is true
-//             // Just return
-//             if (index === i) {
-//                 return;
-//             }
-//
-//             // Else swap elements
-//             swap(heap, i, index);
-//
-//             // Continue by using the swapped index
-//             i = index;
-//         }
-//     }
-//
-//     const swap = (list_ville6, firstItemIndex, lastItemIndex) => {
-//         const temp = list_ville6[firstItemIndex];
-//
-//         // Swap first and last items in the array
-//         list_ville6[firstItemIndex] = list_ville6[lastItemIndex];
-//         list_ville6[lastItemIndex] = temp;
-//     }
-//
-//
-//
-//
-//
-//     // Build max heap
-//     buildMaxHeap(list_villes6);
-//
-//     // Get the index of the last element
-//     let lastElement = list_villes6.length - 1;
-//
-//     // Continue heap sorting until we have
-//     // One element left
-//     while (lastElement > 0) {
-//         swap(list_villes6, 0, lastElement);
-//         heapify(list_villes6, 0, lastElement);
-//         lastElement -= 1;
-//     }
-//
-//     // Return sorted array
-//     return list_villes6;
-// }
-
-
-
-
-
 console.log("heapsort - implement me !");
 
 
@@ -425,7 +310,6 @@ function quicksort(list_villes7, first_qs, last) {
     }
     return list_villes7;
 }
-
 function partitionner(list_villes7, first_qs, last) {
         let pivot = list_villes7[last];
         let j = first_qs;
@@ -439,7 +323,6 @@ function partitionner(list_villes7, first_qs, last) {
         swap(list_villes7, j, last)
         return j;
     }
-
 console.log("quicksort - done!");
 
 
@@ -473,12 +356,6 @@ function displayListVille() {
         mainList.appendChild(elem);
     }
 }
-
-
-
-//----------------------------
-
-
 
 
 
